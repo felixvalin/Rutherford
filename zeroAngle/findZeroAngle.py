@@ -1,8 +1,16 @@
-import glob
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Sep 15 14:01:53 2017
+
+@author: felixvalin
+"""
+
 import spinmob as s
 import numpy as np
 import matplotlib.pyplot as plt
-from os import system as sys
+import glob
+
 paths = glob.glob("*.txt")
 
 results = []
@@ -10,7 +18,7 @@ results = []
 # loop over the paths
 for path in paths:
         
-    print("Converting " + path + " ...")
+    print("Processing " + path + " ...")
     
     Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=1000, w=25', ymin=4)
     d = s.data.load(path)
@@ -20,12 +28,12 @@ for path in paths:
     Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-200, xmax=click_x+200, ymin=0.5)
     Gaussianfitter.fit()
     Gaussianfitter.ginput()
-#    fitVolts = np.int(path.split('.')[0].split('_')[2][:-1])
+    fitVolts = np.int(path.split('.')[0].split('_')[2][:-1])
 #    plt.savefit("wrongFit.png")
     
-    results.append(np.array([Gaussianfitter.results[0][2], Gaussianfitter.results[1][2][2]]))#, fitVolts]))
+    results.append(np.array([Gaussianfitter.results[0][2], Gaussianfitter.results[1][2][2], fitVolts]))
 
 #sys("mkdir ../calibrationResults")
 
-np.save("../calibrationResults/americium_alone", results)
+np.save("../calibrationResults/mean_std", results)
 #np.save("../calibrationResults/americiumAlone", results)

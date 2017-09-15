@@ -1,5 +1,13 @@
 import glob
 import spinmob
+import sys 
+from os import system as terminal
+
+
+if len(sys.argv) == 0:
+    default_path = "../DataConverted/"
+else:
+    default_path = sys.argv[1]
 
 paths = glob.glob("*.Spe")
 
@@ -38,5 +46,6 @@ for path in paths:
     s = path.split('.')
     s[-1] = 'txt'
     s='.'.join(s)
-    d.save_file(path=('../DataConverted/%s' %s), force_overwrite=True)
+    d.save_file(path=('%s%s' %(default_path,s)), force_overwrite=True)
+    terminal("rm %s" %path)
 #raw_input('<enter>')

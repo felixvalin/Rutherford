@@ -26,7 +26,7 @@ calibrationFitter.fit()
 
 calibResults = np.array([[calibrationFitter.results[0][0], calibrationFitter.results[1][0][0]],[calibrationFitter.results[0][1], calibrationFitter.results[1][1][1]]])
 
-np.save("calibResults", calibrationFitter.results)
+np.save("calibResults", calibResults)
 
 #results = []
 #
