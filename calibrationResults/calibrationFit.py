@@ -13,11 +13,14 @@ results = np.load("mean_std.npy")
 
 results = np.sort(results, 0)
 
-calibrationFitter = s.data.fitter(f='a*(x-x0)+b', p='a=1, b=0, x0=10')
+calibrationFitter = s.data.fitter(f='a*(x)+b', p='a=1, b=0')#, x0=50')
 calibrationFitter.set_data(xdata=results[:,0][1:], ydata=results[:,2][1:], eydata=0.1)#eydata=results[:,1])
 calibrationFitter.set(xlabel='Channel')
 calibrationFitter.set(ylabel='Voltage [V]')
 calibrationFitter.fit()
+
+a_fit = np.array([calibrationFitter.results[0][0], calibrationFitter.results[1][0][0]])
+b_fit = np.array([calibrationFitter.results[0][1], calibrationFitter.results[1][1][1]])
 
 calibResults = np.array([[calibrationFitter.results[0][0], calibrationFitter.results[1][0][0]],[calibrationFitter.results[0][1], calibrationFitter.results[1][1][1]]])
 
