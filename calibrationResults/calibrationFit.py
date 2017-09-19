@@ -24,9 +24,14 @@ calibrationFitter.fit()
 #
 #print(-b_fit[0]/a_fit[0])
 
-calibResults = np.array([[calibrationFitter.results[0][0], calibrationFitter.results[1][0][0]],[calibrationFitter.results[0][1], calibrationFitter.results[1][1][1]]])
+slope = calibrationFitter.results[0][0]
+slope_err = np.sqrt(calibrationFitter.results[1][0][0])
+intercept = calibrationFitter.results[0][1]
+intercept_err = np.sqrt(calibrationFitter.results[1][1][1])
 
-np.save("calibResults", calibResults)
+calibResults = np.array([[slope, slope_err],[intercept, intercept_err]])
+
+np.save("channelToVolt_params", calibResults)
 
 #results = []
 #
