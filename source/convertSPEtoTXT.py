@@ -1,11 +1,10 @@
 import glob
 import spinmob
 import sys 
-from os import system as terminal
-
+import os
 
 if len(sys.argv) == 0:
-    default_path = "../DataConverted/"
+    default_path = "../assets/data/spe/"
 else:
     default_path = sys.argv[1]
 
@@ -47,5 +46,5 @@ for path in paths:
     s[-1] = 'txt'
     s='.'.join(s)
     d.save_file(path=('%s%s' %(default_path,s)), force_overwrite=True)
-    terminal("rm %s" %path)
+    os.rm("%s" %path)
 #raw_input('<enter>')

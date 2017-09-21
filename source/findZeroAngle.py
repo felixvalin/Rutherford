@@ -10,6 +10,10 @@ import spinmob as s
 import numpy as np
 import matplotlib.pyplot as plt
 import glob
+import os
+
+
+os.chdir("../assets/data/angle")
 
 paths = glob.glob("*.txt")
 
@@ -39,4 +43,5 @@ for path in paths:
 #sys("mkdir ../calibrationResults")
 
 np.save("zeroAngle_Mean_Error", results)
+os.rm("*.txt")
 #np.save("../calibrationResults/americiumAlone", results)

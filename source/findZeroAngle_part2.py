@@ -9,6 +9,9 @@ Created on Mon Sep 18 14:23:03 2017
 import spinmob as s
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+
+os.chdir("../assets/data/angle/")
 
 d = np.load('zeroAngle_Mean_Error.npy')
 
