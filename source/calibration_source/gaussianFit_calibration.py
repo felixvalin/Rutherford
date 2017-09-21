@@ -2,8 +2,11 @@ import glob
 import spinmob as s
 import numpy as np
 import matplotlib.pyplot as plt
-from os import system as sys
-paths = glob.glob("*.txt")
+import os
+
+os.chdir("../../database/")
+
+paths = glob.glob("Americium_peak_alone.txt")
 
 results = []
 
@@ -27,5 +30,5 @@ for path in paths:
 
 #sys("mkdir ../calibrationResults")
 
-np.save("../calibrationResults/americium_alone", results)
+np.save("americium_alone", results)
 #np.save("../calibrationResults/americiumAlone", results)
