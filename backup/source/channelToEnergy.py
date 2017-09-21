@@ -3,9 +3,7 @@ import spinmob as s
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-
-os.chdir("../database/foilThickness")
-
+os.chdir("../assets/data/foilThickness")
 paths = glob.glob("*/")
 
 results = []
@@ -14,7 +12,6 @@ results = []
 for path in paths:
 
     print("Inspecting " + path[:-1] + " ...")
-
     os.chdir(path)
 
     subpaths = glob.glob("*.txt")

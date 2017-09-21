@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-os.chdir("../database/angle/")
+os.chdir("../assets/data/angle/")
 
 d = np.load('zeroAngle_Mean_Error.npy')
 

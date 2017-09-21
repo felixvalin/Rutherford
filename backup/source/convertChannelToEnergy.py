@@ -9,7 +9,7 @@ import spinmob as s
 import numpy as np
 import matplotlib.pyplot as plt
 
-channelToEnergy_params = np.load("../database/energy_vs_channel_params.npy")
+channelToEnergy_params = np.load("../assets/data/energy_vs_channel_params.npy")
 
 a1, ea1 = channelToEnergy_params[0]
 b1, eb1 = channelToEnergy_params[1]

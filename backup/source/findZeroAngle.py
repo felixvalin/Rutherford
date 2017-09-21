@@ -13,7 +13,7 @@ import glob
 import os
 
 
-os.chdir("../database/angle")
+os.chdir("../assets/data/angle")
 
 paths = glob.glob("*.txt")
 

@@ -2,10 +2,6 @@ import glob
 import spinmob as s
 import numpy as np
 from os import system as sys
-import os
-
-os.cd("../../database/")
-
 paths = glob.glob("*.txt")
 
 results = []
@@ -26,7 +22,9 @@ for path in paths:
     
     results.append(np.array([Gaussianfitter.results[0][2], Gaussianfitter.results[0][3], fitVolts]))
 
-np.save("../../database/mean_std", results)
+sys("mkdir ../calibrationResults")
+
+np.save("../calibrationResults/mean_std.np", results)
     #    # read all the lines in the file
 #    lines = spinmob.fun.read_lines(path)
 #    

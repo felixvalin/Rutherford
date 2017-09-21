@@ -8,16 +8,13 @@ Created on Thu Sep 14 10:04:15 2017
 
 import spinmob as s
 import numpy as np
-import os
-
-os.chdir("../../database")
 
 results = np.load("mean_std.npy")
 
 results = np.sort(results, 0)
 
 calibrationFitter = s.data.fitter(f='a*(x-x0)', p='a=0.026, x0=28')#, x0=50')
-calibrationFitter.set_data(xdata=results[:,0][1:], ydata=results[:,2][1:], eydata=0.15)#eydata=results[:,1])
+calibrationFitter.set_data(xdata=results[:,0][1:], ydata=results[:,2][1:], eydata=0.1)#eydata=results[:,1])
 calibrationFitter.set(xlabel='Channel')
 calibrationFitter.set(ylabel='Voltage [V]')
 calibrationFitter.fit()

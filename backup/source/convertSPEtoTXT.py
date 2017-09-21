@@ -4,7 +4,7 @@ import sys
 import os
 
 if len(sys.argv) == 0:
-    default_path = "../database/spe/"
+    default_path = "../assets/data/spe/"
 else:
     default_path = sys.argv[1]
 
