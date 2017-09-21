@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-os.chdir("../../database/")
+os.chdir("../database/")
 
 paths = glob.glob("Americium_peak_alone.txt")
 

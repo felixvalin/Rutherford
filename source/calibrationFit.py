@@ -10,7 +10,7 @@ import spinmob as s
 import numpy as np
 import os
 
-os.chdir("../../database")
+os.chdir("../database")
 
 results = np.load("mean_std.npy")
 

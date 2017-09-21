@@ -8,6 +8,9 @@ Created on Fri Sep 15 14:19:15 2017
 
 import spinmob as s
 import numpy as np
+import os
+
+os.chdir("../database/")
 
 zero_energy = np.load("channelToVolt_params.npy")[0]
 #zero_energy = fitResults[1]

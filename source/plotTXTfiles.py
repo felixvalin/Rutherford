@@ -4,7 +4,7 @@ import numpy as np
 from os import system as sys
 import os
 
-os.cd("../../database/")
+os.cd("../database/")
 
 paths = glob.glob("*.txt")
 
