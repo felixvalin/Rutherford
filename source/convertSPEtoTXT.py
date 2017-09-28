@@ -1,19 +1,22 @@
+#!/usr/bin/env python3
 import glob
 import spinmob
 import sys 
 import os
 
-if len(sys.argv) == 0:
-    default_path = "../database/spe/"
-else:
-    default_path = sys.argv[1]
+#Retreive the read/write paths for files
+#Usually read is '../database/'
+if len(sys.argv) == 1:
+    file_path = input("Where to read the file?: ")
+elif len(sys.argv) == 2:
+    file_path = sys.argv[1]
 
-paths = glob.glob("*.Spe")
+paths = glob.glob("{}*.Spe".format(file_path))
 
 # loop over the paths
 for path in paths:
     
-    print("Converting " + path + " ...")
+    print("Converting " + path.split('/')[-1] + " ...")
     
     # read all the lines in the file
     lines = spinmob.fun.read_lines(path)
@@ -45,6 +48,7 @@ for path in paths:
     s = path.split('.')
     s[-1] = 'txt'
     s='.'.join(s)
-    d.save_file(path=('%s%s' %(default_path,s)), force_overwrite=True)
-    os.rm("%s" %path)
+    #Saves to new path
+    d.save_file(path=('%s' %(s)), force_overwrite=True)
+    os.remove("%s" %path)
 #raw_input('<enter>')
