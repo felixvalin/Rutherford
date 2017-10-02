@@ -26,3 +26,10 @@ def calibrate(channel, channel_err):
     energy_err = energy*np.sqrt((err1/result1)**2+(ea1/a1)**2)   
     
     return energy, energy_err
+
+def calibrate_channel(channel):
+    
+    result1 = channel-b1
+    energy = result1/a1
+    
+    return energy

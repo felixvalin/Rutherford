@@ -10,6 +10,7 @@ if len(sys.argv) == 1:
     file_path = input("Where to read the file?: ")
 elif len(sys.argv) == 2:
     file_path = sys.argv[1]
+    
 
 paths = glob.glob("{}*.Spe".format(file_path))
 
