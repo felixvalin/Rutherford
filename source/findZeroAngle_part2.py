@@ -30,8 +30,8 @@ click_x, click_y = zeroFitter.ginput()[0]
 print("CLICK THE PEAK!!")
 zeroFitter(a=click_y, x0=click_x, xmin=click_x-200, xmax=click_x+200, ymin=0.5)
 zeroFitter.fit()
-zeroFitter.ginput()
 plt.savefig("../../assets/true_Zero.svg")
+zeroFitter.ginput()
 
 trueAngle = zeroFitter.results[0][2]
 trueAngle_err = zeroFitter.results[1][2][2]
