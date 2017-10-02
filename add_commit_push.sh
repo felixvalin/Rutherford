@@ -1,11 +1,20 @@
 #!/bin/bash
 
-if [ $# = 0 ]; then
-	mess = $1
+if [ $# -ge 1 ]; then
+	mess=$1
+	echo $mess
+	branch=$2
 else
 	echo  -n "Commit message: "
-	mess = $((read))
+	mess=$((read))
+	echo -n "Branch: "
+	branch=$((read))
 fi
 
 
-git add -A && git commit -a -m mess && git push origin master
+git add -A 
+
+git commit -a -m $mess 
+
+git push origin $branch
+
