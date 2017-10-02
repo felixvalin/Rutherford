@@ -71,7 +71,6 @@ for master_path in file_path:
         
         Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=1000, w=25', ymin=4)
         d = s.data.load(path)
-        d[0] =
         d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
         d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
         Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
@@ -103,7 +102,7 @@ for master_path in file_path:
         combined_stds = hypot(stds)
         #Writes over results
         results = np.array([combined_means, combined_stds])
-#        results = conv.calibrate(results[0], results[1])
+        results = conv.calibrate(results[0], results[1])
             
     npy_file = path.split('.')[0][:-6]
 #    s[-1] = 'txt'

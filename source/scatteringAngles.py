@@ -40,53 +40,53 @@ if file_path is '':
 #else:
 #    combine_results = False
     
-#file_paths = glob.glob("{}*.txt".format(file_path))
-#
-#angles = []
-#
-##Find all angles
-#for path in file_paths:
-#    angle = np.int(path.split('_')[1])
-#    angles.append(angle)
-#
-#max_angle = np.max(angles)
-#
-##Each indices of this array will represent the angles
-#results = [[] for _ in range(max_angle+1)]
-#    
-#for path in file_paths:
-#    
-#    print("\n----------------------------------------\n")
-#    
-#    print("Computing " + path.split('/')[-1] + " ...")
-#    
-#    angle = np.int(path.split('_')[1])
-#    
-##    Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=1000, w=25')#, ymin=4)
-#    Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=5, b=0, x0=4.3, w=0.1')#, ymin=4)
-#    d = s.data.load(path)
-#    d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
-#    d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
-#    d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
-#    Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
-##    Gaussianfitter.set(xlabel="Channels")
-#    Gaussianfitter.set(xlabel="Energy [eV]")
-#    Gaussianfitter.set(ylabel="Counts")
-#    print("Click the peak!")
-#    click_x, click_y = Gaussianfitter.ginput()[0]
-#    Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-0.5, xmax=click_x+0.5, ymin=np.max(d[1])*0.05)
-#    Gaussianfitter.fit()
-#    Gaussianfitter.ginput()
-#    try:
-#        results[angle].append(Gaussianfitter.results[0][2])
-#        results[angle].append(np.sqrt(Gaussianfitter.results[1][2][2]))
-#    except TypeError:
-#        print("Watch out! This particular dataset has not been accounted for (peak too small): {}".format(path.split('/')[-1]))
-#        pass
-#    plt.savefig("../assets/{}.svg".format(path.split('/')[-1].split('.')[0]))
-#    np.save("{}allResults".format(file_path), results)
-#
-##print(results)
+file_paths = glob.glob("{}*.txt".format(file_path))
+
+angles = []
+
+#Find all angles
+for path in file_paths:
+    angle = np.int(path.split('_')[1])
+    angles.append(angle)
+
+max_angle = np.max(angles)
+
+#Each indices of this array will represent the angles
+results = [[] for _ in range(max_angle+1)]
+    
+for path in file_paths:
+    
+    print("\n----------------------------------------\n")
+    
+    print("Computing " + path.split('/')[-1] + " ...")
+    
+    angle = np.int(path.split('_')[1])
+    
+#    Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=1000, w=25')#, ymin=4)
+    Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=5, b=0, x0=4.3, w=0.1')#, ymin=4)
+    d = s.data.load(path)
+    d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
+    d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
+    d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
+    Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
+#    Gaussianfitter.set(xlabel="Channels")
+    Gaussianfitter.set(xlabel="Energy [eV]")
+    Gaussianfitter.set(ylabel="Counts")
+    print("Click the peak!")
+    click_x, click_y = Gaussianfitter.ginput()[0]
+    Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-0.5, xmax=click_x+0.5, ymin=np.max(d[1])*0.05)
+    Gaussianfitter.fit()
+    Gaussianfitter.ginput()
+    try:
+        results[angle].append(Gaussianfitter.results[0][2])
+        results[angle].append(np.sqrt(Gaussianfitter.results[1][2][2]))
+    except TypeError:
+        print("Watch out! This particular dataset has not been accounted for (peak too small): {}".format(path.split('/')[-1]))
+        pass
+    plt.savefig("../assets/{}.svg".format(path.split('/')[-1].split('.')[0]))
+    np.save("{}allResults".format(file_path), results)
+
+#print(results)
 
 results = np.load("{}allResults.npy".format(file_path))
 
