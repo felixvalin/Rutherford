@@ -2,7 +2,6 @@
 
 if [ $# -ge 1 ]; then
 	mess=$1
-	echo $mess
 	branch=$2
 else
 	echo  -n "Commit message: "
@@ -14,7 +13,9 @@ fi
 
 git add -A 
 
-#git commit -a -m $mess 
+echo $mess
+git commit -a -m
+#$mess 
 
 git push origin $branch
 
