@@ -14,7 +14,7 @@ fi
 
 git add -A 
 
-git commit -a -m $mess 
+#git commit -a -m $mess 
 
 git push origin $branch
 
