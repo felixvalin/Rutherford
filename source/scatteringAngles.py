@@ -81,7 +81,7 @@ for path in file_paths:
         results[angle].append(Gaussianfitter.results[0][2])
         results[angle].append(np.sqrt(Gaussianfitter.results[1][2][2]))
     except TypeError:
-        print("Watch out! This particular dataset has not been accounted for (peak too small): {}".format(path.split('/')[-1]))
+        print("\nWatch out! This particular dataset has not been accounted for (peak too small): {}".format(path.split('/')[-1]))
         pass
     plt.savefig("../assets/{}.svg".format(path.split('/')[-1].split('.')[0]))
     np.save("{}allResults".format(file_path), results)
