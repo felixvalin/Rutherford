@@ -21,17 +21,16 @@ americium_energy = 5.486
 channels = np.array([zero_energy[0],americium[0]])
 energy = np.array([0,americium_energy])
 
-Gaussianfitter = s.data.fitter('a*x+b', 'a=1, b=0')
-Gaussianfitter.set_data(xdata=energy, ydata=channels, eydata=[np.sqrt(zero_energy[1]), np.sqrt(americium[1])])
-Gaussianfitter.set(xlabel='Energy [MeV]')
-Gaussianfitter.set(ylabel='Channel')
-Gaussianfitter.fit()
+dy = channels[1] - channels[0]
+dx = energy[1] - energy[0]
+edy = np.sqrt(zero_energy[1]**2 + americium[1]**2)
+slope = dy/dx
+slope_err = edy/dx
 
-slope = Gaussianfitter.results[0][0]
-slope_err = np.sqrt(Gaussianfitter.results[1][0][0])
-intercept = Gaussianfitter.results[0][1]
-intercept_err = np.sqrt(Gaussianfitter.results[1][1][1])
+intercept = americium[0] - slope*americium_energy
+intercept_err = np.sqrt(americium[1]**2 + (slope_err*americium_energy)**2)
 
 params = np.array([[slope, slope_err],[intercept, intercept_err]])
+#print(params)
 
 np.save("energy_vs_channel_params", params)

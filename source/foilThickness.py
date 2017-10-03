@@ -18,43 +18,55 @@ font = {'family' : 'normal',
 
 matplotlib.rc('font', **font)
 
+copperP = np.load("../database/foilThickness/copperP.npy")
+aluminumP = np.load("../database/foilThickness/aluminumP.npy")
+goldP = np.load("../database/foilThickness/goldP.npy")
+nofoil = np.load("../database/foilThickness/noFoil/NoFoil.npy")
+b1 = np.load("../database/foilThickness/b1/b1.npy") #Gold
+b3 = np.load("../database/foilThickness/b3/b3.npy") #Gold
+b6 = np.load("../database/foilThickness/b6/b6.npy") #Gold
+f1 = np.load("../database/foilThickness/f1/f1.npy") #Aluminum
+f5 = np.load("../database/foilThickness/f5/f5.npy") #Copper
 
-e0 = np.array([0.5,0.75,1.0,1.20,1.30,1.50,2.0,2.5,3.0,3.4,3.6,4.0,4.4,4.6,5.0,5.5,6,7])
-copper = np.array([1.06,1.38,1.69,1.95,2.08,2.36,3.11,3.93,4.82,5.58,5.98,6.81,7.68,8.13,9.06,10.3,11.6,14.3])
-aluminum = np.array([0.65,0.82,0.99,1.15,1.23,1.39,1.85,2.37,2.94,3.44,3.7,4.25,4.84,5.15,5.79,6.63,7.53,9.48])
-gold = np.array([1.9,2.5,3.12,3.64,3.91,4.47,5.97,7.59,9.34,10.8,11.6,13.2,14.8,15.7,17.4,19.7,22.1,27.1])
+def thickness(nofoil, foil, materialP):
+    #Retreives material, foils params
+    a, ea = materialP[0]
+    b, eb = materialP[1]
+    c, ec = materialP[2]
+    nf, enf = nofoil
+    f, ef = foil
+    
+    #Computes range for foil
+    Af = a*f**2
+    Bf = b*f
+    Ef = Af+Bf+c
+    #error on foil Range
+    eAf = np.sqrt((f**2*ea)**2 + (2*f*a*ef)**2)
+    eBf = np.sqrt((f*eb)**2 + (b*ef)**2)
+    eEf = np.sqrt(eAf**2+eBf**2+ec**2)
+    
+    #Computes range for no foil
+    Anf = a*nf**2
+    Bnf = b*nf
+    Enf = Anf+Bnf+c
+    #error on no foil range
+    eAnf = np.sqrt((nf**2*ea)**2 + (2*nf*a*enf)**2)
+    eBnf = np.sqrt((nf*eb)**2 + (b*enf)**2)
+    eEnf = np.sqrt(eAnf**2+eBnf**2+ec**2) 
+    
+    return Enf - Ef, np.sqrt(eEnf**2+eEf**2)
 
-#plt.figure()
+b1_thickness = thickness(nofoil, b1, goldP)
+b3_thickness = thickness(nofoil, b3, goldP)
+b6_thickness = thickness(nofoil, b6, goldP)
+f1_thickness = thickness(nofoil, f1, aluminumP)
+f5_thickness = thickness(nofoil, f5, copperP)
 
-copperF = s.data.fitter(f='a*x**2+b*x+c', p='a=1.0,b=1.0,c=0')
-copperF.set_data(xdata=e0, ydata=copper, eydata=0.01)
-copperF.set(xlabel="$E_0$")
-copperF.set(ylabel="Ranges for Copper [mg/cm$^2$]")
-copperF.fit()
-plt.savefig("../assets/copperThickness.svg")
-copperP = np.array([[copperF.results[0][0], np.sqrt(copperF.results[1][0][0])]])
-copperP = np.append(copperP,[[copperF.results[0][1], np.sqrt(copperF.results[1][1][1])]], axis=0)
-copperP = np.append(copperP,[[copperF.results[0][2], np.sqrt(copperF.results[1][2][2])]], axis=0)
-np.save("../database/foilThickness/copperP", copperP)
+thicknesses = np.array([[b1_thickness, "b1"]])
+thicknesses = np.append(thicknesses, [[b3_thickness, "b3"]], axis=0)
+thicknesses = np.append(thicknesses, [[b6_thickness, "b6"]], axis=0)
+thicknesses = np.append(thicknesses, [[f1_thickness, "f1"]], axis=0)
+thicknesses = np.append(thicknesses, [[f5_thickness, "f5"]], axis=0)
 
-aluminumF = s.data.fitter(f='a*x**2+b*x+c', p='a=1.0,b=1.0,c=0')
-aluminumF.set_data(xdata=e0, ydata=aluminum, eydata=0.01)
-aluminumF.set(xlabel="$E_0$")
-aluminumF.set(ylabel="Ranges for Aluminum [mg/cm$^2$]")
-aluminumF.fit()
-plt.savefig("../assets/aluminumThickness.svg")
-aluminumP = np.array([[aluminumF.results[0][0], np.sqrt(aluminumF.results[1][0][0])]])
-aluminumP = np.append(aluminumP,[[aluminumF.results[0][1], np.sqrt(aluminumF.results[1][1][1])]], axis=0)
-aluminumP = np.append(aluminumP,[[aluminumF.results[0][2], np.sqrt(aluminumF.results[1][2][2])]], axis=0)
-np.save("../database/foilThickness/aluminumP", aluminumP)
 
-goldF = s.data.fitter(f='a*x**2+b*x+c', p='a=1.0,b=1.0,c=0')
-goldF.set_data(xdata=e0, ydata=gold, eydata=0.01)
-goldF.set(xlabel="$E_0$")
-goldF.set(ylabel="Ranges for Gold [mg/cm$^2$]")
-goldF.fit()
-plt.savefig("../assets/goldThickness.svg")
-goldP = np.array([[goldF.results[0][0], np.sqrt(goldF.results[1][0][0])]])
-goldP = np.append(goldP,[[goldF.results[0][1], np.sqrt(goldF.results[1][1][1])]], axis=0)
-goldP = np.append(goldP,[[goldF.results[0][2], np.sqrt(goldF.results[1][2][2])]], axis=0)
-np.save("../database/foilThickness/goldP", goldP)
+np.save("../database/foilThickness/thicknesses", thicknesses)

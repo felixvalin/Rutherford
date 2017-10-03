@@ -65,19 +65,22 @@ for path in file_paths:
 #    Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=1000, w=25')#, ymin=4)
     Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=5, b=0, x0=4.3, w=0.1')#, ymin=4)
     d = s.data.load(path)
+    time = np.float(d.headers['MEAS_TIM:'].split(' ')[0])
     d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
     d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
     d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
     Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
 #    Gaussianfitter.set(xlabel="Channels")
-    Gaussianfitter.set(xlabel="Energy [eV]")
+    Gaussianfitter.set(xlabel="Energy [MeV]")
     Gaussianfitter.set(ylabel="Counts")
     print("Click the peak!")
     click_x, click_y = Gaussianfitter.ginput()[0]
     Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-0.5, xmax=click_x+0.5, ymin=np.max(d[1])*0.05)
     Gaussianfitter.fit()
-    Gaussianfitter.ginput()
+#    Gaussianfitter.ginput()
     try:
+        results[angle].append(Gaussianfitter.results[0][0]/time)
+        results[angle].append(Gaussianfitter.results[1][0][0]/time)#There is no uncertainty on time
         results[angle].append(Gaussianfitter.results[0][2])
         results[angle].append(np.sqrt(Gaussianfitter.results[1][2][2]))
     except TypeError:
@@ -94,20 +97,24 @@ results = np.load("{}allResults.npy".format(file_path))
 #Combines results for every angles 
 for angle in range(len(results)):
     if len(results[angle]) != 0:
-        means = results[angle][0::2]
-        stds = results[angle][1::2]
+        count_rates = results[angle][0::2]
+        count_rates_err = results[angle][1::2]
+        means = results[angle][2::2]
+        stds = results[angle][3::2]
     #    results = np.zeroes(2)
     #    for i in range(len(means)):
+        combined_cout_rate= np.mean(count_rates)
+        combined_count_rate_err = hypot(count_rates_err)
         combined_means = np.mean(means)
         combined_stds = hypot(stds)
         #Writes over results
 #            results[angle] = np.array([combined_means, combined_stds])
 #        mean_std = conv.calibrate(combined_means, combined_stds)
-        mean_std = np.array([combined_means, combined_stds])
-        np.save('{}angle_{}'.format(file_path, angle), mean_std)
+        this_result = np.array([combined_cout_rate, combined_count_rate_err, combined_means, combined_stds])
+        np.save('{}angle_{}'.format(file_path, angle), this_result)
         
         print("\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n")
-        print("Saved data (in [eV]) to: angle_{}.npy".format(angle))
+        print("Saved data (in [count/sec] and [eV]) to: angle_{}.npy".format(angle))
         print("\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             
 #npy_file = path.split('.')[0][:-6]

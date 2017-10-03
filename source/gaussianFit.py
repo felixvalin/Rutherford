@@ -14,25 +14,6 @@ font = {'family' : 'normal',
 
 matplotlib.rc('font', **font)
 
-#Retreive the read/write paths for files
-#Usually read is '../database/'
-#default_path = '../database/foilThickness/*/'
-#combine_results = True
-#print(sys.argv)
-#if len(sys.argv) == 1:
-#    file_path = input("Where to read the file?: ")
-#    file_path = glob.glob("{}".format(file_path))
-#    if input("Combine results together? [y/n]: ") =='y':
-#        combine_results = True
-#elif len(sys.argv) == 2:
-#    file_path = sys.argv[1:]
-#    if input("Combine results together? [y/n]: ") =='y':
-#        combine_results = True
-#elif len(sys.argv) == 3:
-#    file_path = sys.argv[1]
-#    if sys.argv[2] == 1:
-#        combine_results = True
-
 def hypot(values):
     sum = 0
     for x in values:
@@ -69,29 +50,25 @@ for master_path in file_path:
         
         print("Converting " + path + " ...")
         
-        Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=1000, w=25', ymin=4)
+        Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=200, b=0, x0=3.5, w=0.1', ymin=4)
         d = s.data.load(path)
+        d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
         d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
         d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
         Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
-        Gaussianfitter.set(xlabel="Channel")
+        Gaussianfitter.set(xlabel="Energy [MeV]")
         Gaussianfitter.set(ylabel="Counts")
         print("Click the peak!")
         click_x, click_y = Gaussianfitter.ginput()[0]
-        Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-200, xmax=click_x+200, ymin=np.max(d[1])*0.15)
+        Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-1, xmax=click_x+1, ymin=np.max(d[1])*0.15)
         Gaussianfitter.fit()
-        ###For testing purposes
-#        Gaussianfitter.ginput()
-    #    fitVolts = np.int(path.split('.')[0].split('_')[2][:-1])
-    #    plt.savefit("wrongFit.png")
-        results.append(Gaussianfitter.results[0][2])
-        results.append(np.sqrt(Gaussianfitter.results[1][2][2]))#, fitVolts]))
-#        plt.savefig("../assets/{}.png".format(path.split('/')[-1].split('.')[0]))
-
-        # get the new path
-        #####For testing
-#        break
-#    results = conv.calibrate(results[0], results[1])
+        try:
+            results.append(Gaussianfitter.results[0][2])
+            results.append(np.sqrt(Gaussianfitter.results[1][2][2]))
+        except TypeError:
+            print("This dataset has not been accounted for due to a NoneType error...")
+            pass
+        plt.savefig("../../../assets/{}.svg".format(path.split('.')[0]))
     
     if combine_results == True:
         means = results[0::2]

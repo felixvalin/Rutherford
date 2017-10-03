@@ -36,13 +36,13 @@ for path in paths:
     d = s.data.load(path)
     d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
     Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
-    Gaussianfitter.set(xlabel="Energy [eV]")
+    Gaussianfitter.set(xlabel="Energy [MeV]")
     Gaussianfitter.set(ylabel="Counts")
     print("CLICK THE PEAK!!")
     click_x, click_y = Gaussianfitter.ginput()[0]
     Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-1, xmax=click_x+1, ymin=0.5)
     Gaussianfitter.fit()
-    Gaussianfitter.ginput()
+#    Gaussianfitter.ginput()
     time = d.headers['MEAS_TIM:'].split(' ')
     time = np.float(time[0])#+'.'+time[1])
 #    mean = Gaussianfitter.results[0][2]/time
