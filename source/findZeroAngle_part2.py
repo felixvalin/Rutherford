@@ -24,6 +24,7 @@ d = np.load('zeroAngle_Mean_Error.npy')
 
 zeroFitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=0, w=3')#, ymin=4)
 zeroFitter.set_data(xdata=d[:,2], ydata=d[:,0], eydata=d[:,1])
+zeroFitter.set(plot_guess=False)
 zeroFitter.set(xlabel="Angle [Degrees]")
 zeroFitter.set(ylabel="Count Rate [Counts/Sec]")
 click_x, click_y = zeroFitter.ginput()[0]
@@ -35,6 +36,6 @@ zeroFitter.ginput()
 
 trueAngle = zeroFitter.results[0][2]
 trueAngle_err = zeroFitter.results[1][2][2]
-rcs = zeroFitter.reduced_chi_squareds()
+rcs = zeroFitter.reduced_chi_squareds()[0]
 
 np.save('trueAngle', [trueAngle, trueAngle_err, rcs])

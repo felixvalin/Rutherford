@@ -56,6 +56,7 @@ for master_path in file_path:
         d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
         d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
         Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
+        Gaussianfitter.set(plot_guess=False)
         Gaussianfitter.set(xlabel="Energy [MeV]")
         Gaussianfitter.set(ylabel="Counts")
         print("Click the peak!")
@@ -65,7 +66,7 @@ for master_path in file_path:
         try:
             results.append(Gaussianfitter.results[0][2])
             results.append(np.sqrt(Gaussianfitter.results[1][2][2]))
-            results.append(Gaussianfitter.reduced_chi_squareds())
+            results.append(Gaussianfitter.reduced_chi_squareds()[0])
         except TypeError:
             print("This dataset has not been accounted for due to a NoneType error...")
             pass

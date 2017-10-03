@@ -73,6 +73,7 @@ for path in file_paths:
 #    Gaussianfitter.set(xlabel="Channels")
     Gaussianfitter.set(xlabel="Energy [MeV]")
     Gaussianfitter.set(ylabel="Counts")
+    Gaussianfitter.set(plot_guess=False)
     print("Click the peak!")
     click_x, click_y = Gaussianfitter.ginput()[0]
     Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-0.5, xmax=click_x+0.5, ymin=np.max(d[1])*0.05)
@@ -83,7 +84,7 @@ for path in file_paths:
         results[angle].append(np.sqrt(Gaussianfitter.results[1][0][0])/time)#There is no uncertainty on time
         results[angle].append(Gaussianfitter.results[0][2])
         results[angle].append(np.sqrt(Gaussianfitter.results[1][2][2]))
-        results[angle].append(Gaussianfitter.reduced_chi_squareds())
+        results[angle].append(Gaussianfitter.reduced_chi_squareds()[0])
     except TypeError:
         print("\nWatch out! This particular dataset has not been accounted for (peak too small): {}".format(path.split('/')[-1]))
         pass

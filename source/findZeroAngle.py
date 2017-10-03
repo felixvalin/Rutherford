@@ -36,6 +36,7 @@ for path in paths:
     d = s.data.load(path)
     d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
     Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
+    Gaussianfitter.set(plot_guess=False)
     Gaussianfitter.set(xlabel="Energy [MeV]")
     Gaussianfitter.set(ylabel="Counts")
     print("CLICK THE PEAK!!")
@@ -49,7 +50,7 @@ for path in paths:
     mean = Gaussianfitter.results[0][0]/time
     error = mean * Gaussianfitter.results[1][0][0]/Gaussianfitter.results[0][0]#Error propagation formula
     angle = np.float(path.split('_')[1][:-4])
-    rcs = Gaussianfitter.reduced_chi_squareds() 
+    rcs = Gaussianfitter.reduced_chi_squareds()[0]
     #    plt.savefit("wrongFit.png")
     
     results.append(np.array([mean, error, angle, rcs]))
