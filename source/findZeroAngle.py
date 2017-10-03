@@ -32,6 +32,7 @@ results = []
 for path in paths:
         
     print("Processing " + path + " ...")    
+#    s.tweaks.ubertidy()
     Gaussianfitter = s.data.fitter('a*exp(-(x-x0)**2/w**2)+b', 'a=1, b=0, x0=4.2, w=1')#, ymin=4)
     d = s.data.load(path)
     d[0] = [conv.calibrate_channel(data) for data in range(len(d[0]))]
@@ -43,6 +44,7 @@ for path in paths:
     click_x, click_y = Gaussianfitter.ginput()[0]
     Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-1, xmax=click_x+1, ymin=0.5)
     Gaussianfitter.fit()
+    s.tweaks.ubertidy()
 #    Gaussianfitter.ginput()
     time = d.headers['MEAS_TIM:'].split(' ')
     time = np.float(time[0])#+'.'+time[1])
