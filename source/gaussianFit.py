@@ -10,7 +10,7 @@ import convertChannelToEnergy as conv
 
 #Font size!
 font = {'family' : 'normal',
-        'size'   : 12}
+        'size'   : 15}
 
 matplotlib.rc('font', **font)
 

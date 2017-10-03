@@ -17,7 +17,7 @@ Will not work! maybe angle 15 not complete before doing the combination
 '''
 #For font size!
 font = {'family' : 'normal',
-        'size'   : 13}
+        'size'   : 15}
 
 matplotlib.rc('font', **font)
 
