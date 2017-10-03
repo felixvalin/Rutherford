@@ -80,9 +80,10 @@ for path in file_paths:
 #    Gaussianfitter.ginput()
     try:
         results[angle].append(Gaussianfitter.results[0][0]/time)
-        results[angle].append(Gaussianfitter.results[1][0][0]/time)#There is no uncertainty on time
+        results[angle].append(np.sqrt(Gaussianfitter.results[1][0][0])/time)#There is no uncertainty on time
         results[angle].append(Gaussianfitter.results[0][2])
         results[angle].append(np.sqrt(Gaussianfitter.results[1][2][2]))
+        results[angle].append(Gaussianfitter.reduced_chi_squareds())
     except TypeError:
         print("\nWatch out! This particular dataset has not been accounted for (peak too small): {}".format(path.split('/')[-1]))
         pass
@@ -101,16 +102,18 @@ for angle in range(len(results)):
         count_rates_err = results[angle][1::2]
         means = results[angle][2::2]
         stds = results[angle][3::2]
+        rcs = results[angle][4::2]
     #    results = np.zeroes(2)
     #    for i in range(len(means)):
         combined_cout_rate= np.mean(count_rates)
         combined_count_rate_err = hypot(count_rates_err)
         combined_means = np.mean(means)
         combined_stds = hypot(stds)
+        combined_rcs = np.mean(rcs)
         #Writes over results
 #            results[angle] = np.array([combined_means, combined_stds])
 #        mean_std = conv.calibrate(combined_means, combined_stds)
-        this_result = np.array([combined_cout_rate, combined_count_rate_err, combined_means, combined_stds])
+        this_result = np.array([combined_cout_rate, combined_count_rate_err, combined_means, combined_stds, combined_rcs])
         np.save('{}angle_{}'.format(file_path, angle), this_result)
         
         print("\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n")

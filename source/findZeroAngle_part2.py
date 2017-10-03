@@ -35,5 +35,6 @@ zeroFitter.ginput()
 
 trueAngle = zeroFitter.results[0][2]
 trueAngle_err = zeroFitter.results[1][2][2]
+rcs = zeroFitter.reduced_chi_squareds()
 
-np.save('trueAngle', [trueAngle, trueAngle_err])
+np.save('trueAngle', [trueAngle, trueAngle_err, rcs])

@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 
 font = {'family' : 'normal',
-        'size' : 14}
+        'size' : 15}
 
 matplotlib.rc('font', **font)
 
@@ -35,6 +35,7 @@ plt.savefig("../assets/copperThickness.svg")
 copperP = np.array([[copperF.results[0][0], np.sqrt(copperF.results[1][0][0])]])
 copperP = np.append(copperP,[[copperF.results[0][1], np.sqrt(copperF.results[1][1][1])]], axis=0)
 copperP = np.append(copperP,[[copperF.results[0][2], np.sqrt(copperF.results[1][2][2])]], axis=0)
+copperP = np.append(copperF.reduced_chi_squareds())
 np.save("../database/foilThickness/copperP", copperP)
 
 aluminumF = s.data.fitter(f='a*x**2+b*x+c', p='a=1.0,b=1.0,c=0')
@@ -46,6 +47,7 @@ plt.savefig("../assets/aluminumThickness.svg")
 aluminumP = np.array([[aluminumF.results[0][0], np.sqrt(aluminumF.results[1][0][0])]])
 aluminumP = np.append(aluminumP,[[aluminumF.results[0][1], np.sqrt(aluminumF.results[1][1][1])]], axis=0)
 aluminumP = np.append(aluminumP,[[aluminumF.results[0][2], np.sqrt(aluminumF.results[1][2][2])]], axis=0)
+aluminumP = np.append(aluminumF.reduced_chi_squareds())
 np.save("../database/foilThickness/aluminumP", aluminumP)
 
 goldF = s.data.fitter(f='a*x**2+b*x+c', p='a=1.0,b=1.0,c=0')
@@ -57,4 +59,5 @@ plt.savefig("../assets/goldThickness.svg")
 goldP = np.array([[goldF.results[0][0], np.sqrt(goldF.results[1][0][0])]])
 goldP = np.append(goldP,[[goldF.results[0][1], np.sqrt(goldF.results[1][1][1])]], axis=0)
 goldP = np.append(goldP,[[goldF.results[0][2], np.sqrt(goldF.results[1][2][2])]], axis=0)
+goldP = np.append(goldF.reduced_chi_squareds())
 np.save("../database/foilThickness/goldP", goldP)

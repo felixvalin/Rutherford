@@ -65,6 +65,7 @@ for master_path in file_path:
         try:
             results.append(Gaussianfitter.results[0][2])
             results.append(np.sqrt(Gaussianfitter.results[1][2][2]))
+            results.append(Gaussianfitter.reduced_chi_squareds())
         except TypeError:
             print("This dataset has not been accounted for due to a NoneType error...")
             pass
@@ -73,13 +74,15 @@ for master_path in file_path:
     if combine_results == True:
         means = results[0::2]
         stds = results[1::2]
+        rcs_s = results[2::2]
     #    results = np.zeroes(2)
     #    for i in range(len(means)):
         combined_means = np.mean(means)
         combined_stds = hypot(stds)
+        combined_rcs = np.mean(rcs_s)
         #Writes over results
-        results = np.array([combined_means, combined_stds])
-        results = conv.calibrate(results[0], results[1])
+        results = np.array([combined_means, combined_stds, combined_rcs])
+#        results = conv.calibrate(results[0], results[1])
             
     npy_file = path.split('.')[0][:-6]
 #    s[-1] = 'txt'
