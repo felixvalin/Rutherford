@@ -14,7 +14,7 @@ import os
 
 #For font size!
 font = {'family' : 'normal',
-        'size'   : 13}
+        'size'   : 15}
 
 matplotlib.rc('font', **font)
 
@@ -37,6 +37,11 @@ zeroFitter.ginput()
 trueAngle = zeroFitter.results[0][2]
 trueAngle_err = zeroFitter.results[1][2][2]
 rcs = zeroFitter.reduced_chi_squareds()[0]
+<<<<<<< HEAD
 results = np.array([trueAngle, trueAngle_err, rcs])
 
 np.save('trueAngle', results)
+=======
+
+np.save('trueAngle', [trueAngle, trueAngle_err, rcs])
+>>>>>>> df2eea1b908593da14acc0e7cadae798e639964c

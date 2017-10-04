@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 
 font = {'family' : 'normal',
-        'size' : 13}
+        'size' : 15}
 
 matplotlib.rc('font', **font)
 
@@ -54,7 +54,7 @@ def thickness(nofoil, foil, materialP):
     eBnf = np.sqrt((nf*eb)**2 + (b*enf)**2)
     eEnf = np.sqrt(eAnf**2+eBnf**2+ec**2) 
     
-    return Enf - Ef, np.sqrt(eEnf**2+eEf**2)
+    return (Enf - Ef), np.sqrt(eEnf**2+eEf**2)
 
 b1_thickness = thickness(nofoil, b1, goldP)
 b3_thickness = thickness(nofoil, b3, goldP)

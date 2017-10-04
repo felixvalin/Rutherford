@@ -10,7 +10,7 @@ import convertChannelToEnergy as conv
 
 #Font size!
 font = {'family' : 'normal',
-        'size'   : 12}
+        'size'   : 15}
 
 matplotlib.rc('font', **font)
 
@@ -56,6 +56,7 @@ for master_path in file_path:
         d[0]=s.fun.coarsen_array(d[0], level=2, method='mean')
         d[1]=s.fun.coarsen_array(d[1], level=2, method='mean')
         Gaussianfitter.set_data(xdata=d[0], ydata=d[1], eydata=np.sqrt(d[1]))
+        Gaussianfitter.set(plot_guess=False)
         Gaussianfitter.set(xlabel="Energy [MeV]")
         Gaussianfitter.set(ylabel="Counts")
         print("Click the peak!")
@@ -65,6 +66,7 @@ for master_path in file_path:
         try:
             results.append(Gaussianfitter.results[0][2])
             results.append(np.sqrt(Gaussianfitter.results[1][2][2]))
+            results.append(Gaussianfitter.reduced_chi_squareds()[0])
         except TypeError:
             print("This dataset has not been accounted for due to a NoneType error...")
             pass
@@ -73,13 +75,15 @@ for master_path in file_path:
     if combine_results == True:
         means = results[0::2]
         stds = results[1::2]
+        rcs_s = results[2::2]
     #    results = np.zeroes(2)
     #    for i in range(len(means)):
         combined_means = np.mean(means)
         combined_stds = hypot(stds)
+        combined_rcs = np.mean(rcs_s)
         #Writes over results
-        results = np.array([combined_means, combined_stds])
-        results = conv.calibrate(results[0], results[1])
+        results = np.array([combined_means, combined_stds, combined_rcs])
+#        results = conv.calibrate(results[0], results[1])
             
     npy_file = path.split('.')[0][:-6]
 #    s[-1] = 'txt'
