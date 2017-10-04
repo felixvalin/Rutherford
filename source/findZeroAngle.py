@@ -47,7 +47,7 @@ for path in paths:
     time = np.float(time[0])#+'.'+time[1])
 #    mean = Gaussianfitter.results[0][2]/time
     mean = Gaussianfitter.results[0][0]/time
-    error = mean * Gaussianfitter.results[1][0][0]/Gaussianfitter.results[0][0]#Error propagation formula
+    error = mean * np.sqrt(Gaussianfitter.results[1][0][0])/Gaussianfitter.results[0][0]#Error propagation formula
     angle = np.float(path.split('_')[1][:-4])
     #    plt.savefit("wrongFit.png")
     

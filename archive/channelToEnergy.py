@@ -32,7 +32,7 @@ for path in paths:
         Gaussianfitter.fit()
         Gaussianfitter.ginput()
         peakChannel = Gaussianfitter.results[0][2]
-        peakError = Gaussianfitter.results[1][2][2]
+        peakError = np.sqrt(Gaussianfitter.results[1][2][2])
 
         s = path.split(".")
         run = s[-3:]

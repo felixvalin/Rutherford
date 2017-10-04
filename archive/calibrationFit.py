@@ -31,8 +31,9 @@ slope = calibrationFitter.results[0][0]
 slope_err = np.sqrt(calibrationFitter.results[1][0][0])
 intercept = calibrationFitter.results[0][1]
 intercept_err = np.sqrt(calibrationFitter.results[1][1][1])
+rcs = calibrationFitter.reduced_chi_squareds()
 
-calibResults = np.array([[slope, slope_err],[intercept, intercept_err]])
+calibResults = np.array([[slope, slope_err],[intercept, intercept_err],rcs])
 
 np.save("channelToVolt_params", calibResults)
 
