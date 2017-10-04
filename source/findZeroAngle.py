@@ -51,11 +51,13 @@ for path in paths:
 #    mean = Gaussianfitter.results[0][2]/time
     mean = Gaussianfitter.results[0][0]/time
     error = mean * np.sqrt(Gaussianfitter.results[1][0][0])/Gaussianfitter.results[0][0]#Error propagation formula
+    energy = Gaussianfitter.results[0][2]
+    energy_err = np.sqrt(Gaussianfitter.results[1][2][2])
     angle = np.float(path.split('_')[1][:-4])
     rcs = Gaussianfitter.reduced_chi_squareds()[0]
     #    plt.savefit("wrongFit.png")
     
-    results.append(np.array([mean, error, angle, rcs]))
+    results.append(np.array([mean, error, energy,  energy_err, angle, rcs]))
     
     plt.savefig("../../assets/{}.svg".format(path.split('.')[0]))
 

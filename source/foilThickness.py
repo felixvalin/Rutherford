@@ -30,31 +30,26 @@ f5 = np.load("../database/foilThickness/f5/f5.npy") #Copper
 
 def thickness(nofoil, foil, materialP):
     #Retreives material, foils params
-    a, ea = materialP[0]
-    b, eb = materialP[1]
-    c, ec = materialP[2]
+    a, b, c = materialP[:-1][0::2]
+    ea, eb, ec = materialP[:-1][1::2]
+
     nf, enf = nofoil
     f, ef = foil
     
+    #test 
+    E0 = nf-f
+    eE0 = np.sqrt(nf**2+f**2)
+    
     #Computes range for foil
-    Af = a*f**2
-    Bf = b*f
+    Af = a*E0**2
+    Bf = b*E0
     Ef = Af+Bf+c
     #error on foil Range
-    eAf = np.sqrt((f**2*ea)**2 + (2*f*a*ef)**2)
-    eBf = np.sqrt((f*eb)**2 + (b*ef)**2)
+    eAf = np.sqrt((E0**2*ea)**2 + (2*E0*a*eE0)**2)
+    eBf = np.sqrt((E0*eb)**2 + (b*eE0)**2)
     eEf = np.sqrt(eAf**2+eBf**2+ec**2)
-    
-    #Computes range for no foil
-    Anf = a*nf**2
-    Bnf = b*nf
-    Enf = Anf+Bnf+c
-    #error on no foil range
-    eAnf = np.sqrt((nf**2*ea)**2 + (2*nf*a*enf)**2)
-    eBnf = np.sqrt((nf*eb)**2 + (b*enf)**2)
-    eEnf = np.sqrt(eAnf**2+eBnf**2+ec**2) 
-    
-    return (Enf - Ef), np.sqrt(eEnf**2+eEf**2)
+
+    return Ef, eEf
 
 b1_thickness = thickness(nofoil, b1, goldP)
 b3_thickness = thickness(nofoil, b3, goldP)
@@ -68,5 +63,6 @@ thicknesses = np.append(thicknesses, [[b6_thickness, "b6"]], axis=0)
 thicknesses = np.append(thicknesses, [[f1_thickness, "f1"]], axis=0)
 thicknesses = np.append(thicknesses, [[f5_thickness, "f5"]], axis=0)
 
+print(thicknesses)
 
 np.save("../database/foilThickness/thicknesses", thicknesses)

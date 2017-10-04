@@ -40,6 +40,7 @@ if file_path is '':
 #else:
 #    combine_results = False
     
+#file_paths = glob.glob("{}*_0_run?.txt".format(file_path))
 file_paths = glob.glob("{}*.txt".format(file_path))
 
 angles = []
@@ -76,7 +77,7 @@ for path in file_paths:
     Gaussianfitter.set(plot_guess=False)
     print("Click the peak!")
     click_x, click_y = Gaussianfitter.ginput()[0]
-    Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-0.5, xmax=click_x+0.5, ymin=np.max(d[1])*0.05)
+    Gaussianfitter(a=click_y, x0=click_x, xmin=click_x-0.5, xmax=click_x+0.5, ymin=np.max(d[1])*0.25)
     Gaussianfitter.fit()
 #    Gaussianfitter.ginput()
     try:
@@ -93,17 +94,17 @@ for path in file_paths:
 
 #print(results)
 
-results = np.load("{}allResults.npy".format(file_path))
+#results = np.load("{}allResults.npy".format(file_path))
 
 #if combine_results == True:
 #Combines results for every angles 
 for angle in range(len(results)):
     if len(results[angle]) != 0:
-        count_rates = results[angle][0::2]
-        count_rates_err = results[angle][1::2]
-        means = results[angle][2::2]
-        stds = results[angle][3::2]
-        rcs = results[angle][4::2]
+        count_rates = results[angle][0::5]
+        count_rates_err = results[angle][1::5]
+        means = results[angle][2::5]
+        stds = results[angle][3::5]
+        rcs = results[angle][4::5]
     #    results = np.zeroes(2)
     #    for i in range(len(means)):
         combined_cout_rate= np.mean(count_rates)
