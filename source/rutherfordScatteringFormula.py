@@ -44,6 +44,8 @@ def a_s():
     A_c5 = 30
     a_s = (4*np.pi*R_5**2)/A_c5
     err_a_s = a_s*err_count_rate_zero/count_rate_zero
+    print("$a_s$: {} $\pm$ {}".format(a_s, err_a_s))
+
     return a_s, err_a_s
 
 def I_0(a_s, err_a_s):
@@ -51,6 +53,7 @@ def I_0(a_s, err_a_s):
     R_3 = 50.8
     I_0 = (a_s*A_c3)/(4*np.pi*R_3**2)
     err_I_0 = I_0*err_a_s/a_s
+    print("$I_0$: {} $\pm$ {}".format(I_0, err_I_0))
     return I_0, err_I_0
 
 def N_0(thickness, err_thickness):
@@ -58,12 +61,14 @@ def N_0(thickness, err_thickness):
     M = 196.96655 #gold molar mass in g/mol
     n_0 = thickness*N_A/M
     err_n_0 = n_0*err_thickness/thickness
+    print("$n_0$: {} $\pm$ {}".format(n_0, err_n_0))
     return n_0, err_n_0
 
 def cross_section(count_rate_angle, err_count_rate_angle, I_0, err_I_0, n_0, err_n_0):
     delta_omega = 0.09169
     cross_section = 10**27*count_rate_angle/(I_0*n_0*delta_omega)
     err_cross_section = cross_section*np.sqrt((err_count_rate_angle/count_rate_angle)**2+(err_I_0/I_0)**2+(err_n_0/n_0)**2)
+    print("cross_section: {} $\pm$ {}".format(cross_section, err_cross_section))
     return cross_section, err_cross_section
 
 def rutherford_formula(cross_section, err_cross_section, angle, err_angle, energy, err_energy):
@@ -95,10 +100,6 @@ def rutherford_goodness():
     return plotting_value
 
 plotting_value = rutherford_goodness()
-
-print([row[0] for row in plotting_value])
-print([row[1] for row in plotting_value])
-print([row[3] for row in plotting_value])
 
 rutherford_fitter = s.data.fitter('m*x+b', 'm=1, b=0')
 #rutherford_fitter = s.data.fitter('m*x', 'm=1')
